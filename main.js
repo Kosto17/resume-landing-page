@@ -144,23 +144,56 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* ===============================
-       Contact Form
-    =============================== */
+   Contact Form (EmailJS)
+=============================== */
 
-    const form = document.getElementById("contact-form");
+emailjs.init({
+    publicKey: "8eQt8JUQ1t7vWxKG2",
+});
 
-    form.addEventListener("submit", e => {
+const form = document.getElementById("contact-form");
 
-        e.preventDefault();
+form.addEventListener("submit", function (e) {
 
-        alert(
-            "Contact form integration will be added in the next step using EmailJS."
-        );
+    e.preventDefault();
+
+    const button = form.querySelector("button");
+
+    const originalText = button.textContent;
+
+    button.disabled = true;
+    button.textContent = "Sending...";
+
+    emailjs.sendForm(
+        "service_wad6pno",
+        "template_w8kqcic",
+        this
+    )
+
+    .then(() => {
+
+        alert("✅ Message sent successfully!");
 
         form.reset();
 
+    })
+
+    .catch((error) => {
+
+        console.error(error);
+
+        alert("❌ Failed to send message. Please try again.");
+
+    })
+
+    .finally(() => {
+
+        button.disabled = false;
+        button.textContent = originalText;
+
     });
 
+});
 });
 ```
 
